@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.List;
 
 @RestController
 public class FlowableController {
@@ -19,17 +20,18 @@ public class FlowableController {
     private FlowableService myService;
 
     @RequestMapping(value="/startProcess", method= RequestMethod.POST)
-    public int startProcessInstance(@RequestBody JsonNode jsonNode) throws JSONException {
+    public List<String> startProcessInstance(@RequestBody JsonNode jsonNode) throws JSONException {
         return myService.startProcess(jsonNode);
     }
 
     @RequestMapping(value="/currentStatus")
-    public HashMap<String, Object> currentProcessInstance(@RequestBody JsonNode jsonNode) {
+    public String currentProcessInstance(@RequestBody JsonNode jsonNode) {
         return myService.currentProcessStatus(jsonNode);
     }
 
-    @RequestMapping(value="/endTask")
+    @RequestMapping(value="/endTask", method= RequestMethod.POST)
     public void endTask(@RequestBody JsonNode jsonNode) {
+        System.out.println("end task method");
         myService.endCurrentTask(jsonNode);
     }
 

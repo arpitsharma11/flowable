@@ -15,10 +15,8 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 
 @Service
 @Transactional
@@ -31,46 +29,60 @@ public class FlowableService {
     private TaskService taskService;
 
     @Autowired
-    private RestTemplate restTemplate;
+    private EmailService emailService;
 
     @Autowired
     private HistoryService historyService;
 
     @Transactional
-    public int startProcess(JsonNode jsonNode) {
-        Map<String, Object> variables = new HashMap<String, Object>();
-        //System.out.println("appraisal json "+id);
-        //variables.put("id",id );
-        //System.out.println("variables"+variables);
-       System.out.println(jsonNode);
-//
-//        System.out.println("key" + jsonNode.get("key"));
-//        System.out.println("value" + jsonNode.get("value"));
-        variables.put("id",jsonNode);
-        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("appraisalCycle", variables);
-        System.out.println("process started");
+    public List<String> startProcess(JsonNode jsonNode) {
 
-        System.out.println("Number of tasks after process start: "
-                + taskService.createTaskQuery().count());
-        System.out.println("process instance name"+ processInstance.getProcessDefinitionName() + processInstance.getStartUserId() + processInstance.getProcessDefinitionKey());
+        System.out.println(jsonNode);
 
-        System.out.println("running process" + runtimeService.createProcessInstanceQuery().count());
-        System.out.println("process instance id " + processInstance.getId());
-        List<HistoricActivityInstance> activities = historyService.createHistoricActivityInstanceQuery()
-                        .processInstanceId(processInstance.getId())
-                        .finished()
-                        .orderByHistoricActivityInstanceEndTime().asc()
-                        .list();
+        String subject = "Appraisal Cycle Stared";
+        String body = "Zetalent";
+        String managerEmail = "";
+        StringBuffer managerBody = new StringBuffer("List of employees started appraisal cycle\n");
+        List<String> processIds = new ArrayList<>();
+        for (JsonNode employeeJson : jsonNode){
+            Map<String, Object> variables = new HashMap<String, Object>();
+            variables.put("appraisal",employeeJson);
+            ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("appraisalCycle", variables);
+            emailService.sendEmailConfirmation(employeeJson.get("employeeEmail").asText(),body,subject);
+            managerBody.append(employeeJson.get("name") + "\n");
+            processIds.add(processInstance.getId());
 
-        for (HistoricActivityInstance activity : activities) {
-            System.out.println(activity.getActivityId() + " took "
-                    + activity.getDurationInMillis() + " milliseconds");
+            Task task = taskService.createTaskQuery()
+                    .processInstanceId(processInstance.getId())
+                    .singleResult();
+            System.out.println(task.getName());
+            System.out.println("process started");
+
+            System.out.println("Number of tasks after process start: "
+                    + taskService.createTaskQuery().count());
+            System.out.println("process instance name"+ processInstance.getProcessDefinitionName() + processInstance.getStartUserId() + processInstance.getProcessDefinitionKey());
+
+            System.out.println("running process" + runtimeService.createProcessInstanceQuery().count());
+            System.out.println("process instance id " + processInstance.getId());
+            managerEmail = employeeJson.get("managerEmail").asText();
         }
 
-        Task task = taskService.createTaskQuery()
-                .processInstanceId(processInstance.getId())
-                .singleResult();
-        System.out.println(task.getName());
+
+        emailService.sendEmailConfirmation(managerEmail,String.valueOf(managerBody),subject);
+
+
+//        List<HistoricActivityInstance> activities = historyService.createHistoricActivityInstanceQuery()
+//                        .processInstanceId(processInstance.getId())
+//                        .finished()
+//                        .orderByHistoricActivityInstanceEndTime().asc()
+//                        .list();
+//
+//        for (HistoricActivityInstance activity : activities) {
+//            System.out.println(activity.getActivityId() + " took "
+//                    + activity.getDurationInMillis() + " milliseconds");
+//        }
+
+
         //taskService.complete(task.getId());
 //        Task task2 = taskService.createTaskQuery()
 //                .processInstanceId(processInstance.getId())
@@ -96,36 +108,33 @@ public class FlowableService {
 //        for( Task x : a ){
 //            System.out.println(x.getName());
 //       }
-        for (HistoricActivityInstance activity : activities) {
-            System.out.println(activity.getActivityId() + " took "
-                    + activity.getDurationInMillis() + " milliseconds");
-        }
-        return 1;
+//        for (HistoricActivityInstance activity : activities) {
+//            System.out.println(activity.getActivityId() + " took "
+//                    + activity.getDurationInMillis() + " milliseconds");
+//        }
 
+        return processIds;
     }
 
     @Transactional
-    public  void endCurrentTask(JsonNode jsonNode){
+    public String endCurrentTask(JsonNode jsonNode){
+        System.out.println("task json" + jsonNode);
         Task task = taskService.createTaskQuery()
                 .processInstanceId(jsonNode.get("processId").asText())
                 .singleResult();
+        System.out.println("task name :" + task.getName());
         taskService.complete(task.getId());
-        //return processInstance;
-        System.out.println();
+
+        return task.getName();
     }
 
     @Transactional
-    public HashMap<String, Object> currentProcessStatus(JsonNode jsonNode){
+    public String currentProcessStatus(JsonNode jsonNode){
         Task task = taskService.createTaskQuery()
                 .processInstanceId(jsonNode.get("processId").asText())
                 .singleResult();
-        //taskService.complete(task.getId());
-        //return JSONObject.quote(task.getName());
-        HashMap<String, Object> response = new LinkedHashMap<String, Object>();
-        response.put("current_status", task.getName());
 
-
-        return response;
+        return task.getName();
     }
 
     @Transactional

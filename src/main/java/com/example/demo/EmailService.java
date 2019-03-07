@@ -13,14 +13,15 @@ public class EmailService {
     @Autowired
     private JavaMailSender sender;
 
-    public void sendEmailConfirmation(){
+    public void sendEmailConfirmation(String email,String body,String subject){
         MimeMessage message = sender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
         try {
-            helper.setTo("arpit.sharma@zemosolabs.com");
-            helper.setText("Zetalent");
-            helper.setSubject("Appraisal Cycle Stared");
+            System.out.println(email);
+            helper.setTo(email);
+            helper.setText(body);
+            helper.setSubject(subject);
         } catch (MessagingException e) {
             e.printStackTrace();
         }
