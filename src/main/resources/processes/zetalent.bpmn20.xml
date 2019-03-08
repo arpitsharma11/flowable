@@ -11,7 +11,6 @@
     <userTask id="sid-A09134E6-5E33-4BCC-84CB-6EBE99AAFA29" name="One on One" flowable:assignee="${id}">
     </userTask>
     <userTask id="sid-1BCFCD13-A1CA-4D14-AC92-6355487E4FAC" name="Review by appraiser" flowable:assignee="${id}">
-
     </userTask>
     <userTask id="sid-DEE3E0CF-BF61-491F-9C8E-694575648957" name="HR Review" flowable:assignee="${id}">
     </userTask>
@@ -31,6 +30,6 @@
     <sequenceFlow id="sid-6FB0DCE8-0AAF-4C03-9C29-B7D96B48C844" sourceRef="sid-A09134E6-5E33-4BCC-84CB-6EBE99AAFA29" targetRef="sid-2AB94E60-4EAC-482F-A57C-262F6A50EE67"></sequenceFlow>
     <sequenceFlow id="sid-DD077E51-27DE-4F50-A601-0CCE3591E338" sourceRef="startEvent1" targetRef="sid-CDD292C4-CF8E-4E64-B57C-131F50466A37"></sequenceFlow>
     <sequenceFlow id="sid-C9019B31-9AC3-4F2A-9BFE-29B78D871DDB" sourceRef="sid-CDD292C4-CF8E-4E64-B57C-131F50466A37" targetRef="sid-17419001-AF2F-493B-93F7-FEEC5C1EF816"></sequenceFlow>
-    <serviceTask id="sid-CDD292C4-CF8E-4E64-B57C-131F50466A37" name="Send mail to Employee and Managers"></serviceTask>
+    <serviceTask id="sid-CDD292C4-CF8E-4E64-B57C-131F50466A37" name="Send mail to Employee and Managers" flowable:expression="#{emailService.sendEmailHr()}"></serviceTask>
   </process>
 </definitions>
