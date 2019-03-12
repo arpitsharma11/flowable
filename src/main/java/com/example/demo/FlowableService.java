@@ -48,7 +48,7 @@ public class FlowableService {
             Map<String, Object> variables = new HashMap<String, Object>();
             variables.put("appraisal",employeeJson);
             ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("appraisalCycle", variables);
-            emailService.sendEmailConfirmation(employeeJson.get("employeeEmail").asText(),body,subject);
+
             managerBody.append(employeeJson.get("name") + "\n");
             processIds.add(processInstance.getId());
 
@@ -67,8 +67,7 @@ public class FlowableService {
             managerEmail = employeeJson.get("managerEmail").asText();
         }
 
-
-        emailService.sendEmailConfirmation(managerEmail,String.valueOf(managerBody),subject);
+        //emailService.sendEmailConfirmation(managerEmail,String.valueOf(managerBody),subject);
 
 
 //        List<HistoricActivityInstance> activities = historyService.createHistoricActivityInstanceQuery()
@@ -123,7 +122,9 @@ public class FlowableService {
                 .processInstanceId(jsonNode.get("processId").asText())
                 .singleResult();
         System.out.println("task name :" + task.getName());
+        System.out.println("task id " + task.getId());
         taskService.complete(task.getId());
+
 
         return task.getName();
     }

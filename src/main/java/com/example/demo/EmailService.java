@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -30,6 +31,7 @@ public class EmailService {
     }
 
     public void sendEmailSanitation(){
+        System.out.println("send email sanitation");
         MimeMessage message = sender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
@@ -41,10 +43,10 @@ public class EmailService {
             e.printStackTrace();
         }
         sender.send(message);
-
     }
 
     public void sendEmailReview(){
+        System.out.println("send email review");
         MimeMessage message = sender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
@@ -59,6 +61,7 @@ public class EmailService {
 
     }
     public void sendEmailOne(){
+        System.out.println("send email one");
         MimeMessage message = sender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
@@ -72,18 +75,15 @@ public class EmailService {
         sender.send(message);
 
     }
-    public void sendEmailHr(){
-        MimeMessage message = sender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message);
+    public void sendEmailHr(JsonNode jsonNode){
+        System.out.println("send email hr" + jsonNode);
 
-        try {
-            helper.setTo("arpit.sharma@zemosolabs.com");
-            helper.setText("Zetalent");
-            helper.setSubject("Done");
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
-        sender.send(message);
+            sendEmailConfirmation(jsonNode.get("employeeEmail").asText(),"zetalent","Appraisal cycle started");
+            sendEmailConfirmation(jsonNode.get("managerEmail").asText(),jsonNode.get("name").asText(),"Appraisal cycle started");
 
+    }
+
+    public void sendEmailConfirmation(){
+        System.out.println("send email confirmation with no parameters");
     }
 }
