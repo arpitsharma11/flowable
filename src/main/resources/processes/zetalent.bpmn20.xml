@@ -5,14 +5,14 @@
     <userTask id="sid-17419001-AF2F-493B-93F7-FEEC5C1EF816" name="Appraisee Submission" flowable:assignee="${appraisal.appraisalId}">
     </userTask>
     <sequenceFlow id="sid-508DD23E-015E-450E-A604-1C4EC8CD0F01" sourceRef="sid-17419001-AF2F-493B-93F7-FEEC5C1EF816" targetRef="sid-304C05CF-769A-4E3E-A0D2-FBE9C3FC0FF9"></sequenceFlow>
-    <userTask id="sid-041225CA-4A37-4FD4-99EF-94277B763FAE" name="Sanitation check by HR" flowable:assignee="${id}">
+    <userTask id="sid-041225CA-4A37-4FD4-99EF-94277B763FAE" name="Sanitation check by HR" flowable:assignee="${appraisal.appraisalId}">
     </userTask>
     <sequenceFlow id="sid-AC4A37E5-F2A4-4DEF-834F-D743E6EC63A6" sourceRef="sid-304C05CF-769A-4E3E-A0D2-FBE9C3FC0FF9" targetRef="sid-041225CA-4A37-4FD4-99EF-94277B763FAE"></sequenceFlow>
-    <userTask id="sid-A09134E6-5E33-4BCC-84CB-6EBE99AAFA29" name="One on One" flowable:assignee="${id}">
+    <userTask id="sid-A09134E6-5E33-4BCC-84CB-6EBE99AAFA29" name="One on One" flowable:assignee="${appraisal.appraisalId}">
     </userTask>
-    <userTask id="sid-1BCFCD13-A1CA-4D14-AC92-6355487E4FAC" name="Review by appraiser" flowable:assignee="${id}">
+    <userTask id="sid-1BCFCD13-A1CA-4D14-AC92-6355487E4FAC" name="Review by appraiser" flowable:assignee="${appraisal.appraisalId}">
     </userTask>
-    <userTask id="sid-DEE3E0CF-BF61-491F-9C8E-694575648957" name="HR Review" flowable:assignee="${id}">
+    <userTask id="sid-DEE3E0CF-BF61-491F-9C8E-694575648957" name="HR Review" flowable:assignee="${appraisal.appraisalId}">
     </userTask>
     <sequenceFlow id="sid-038BB423-AB09-4E26-AFA4-5DA3E1105D8C" sourceRef="sid-DEE3E0CF-BF61-491F-9C8E-694575648957" targetRef="sid-FB792327-7100-4B6D-B2EA-3BAFB561EFD4"></sequenceFlow>
     <endEvent id="sid-2460310E-25F7-4FA4-94D5-2D2B817F951E"></endEvent>
@@ -30,6 +30,6 @@
     <sequenceFlow id="sid-6FB0DCE8-0AAF-4C03-9C29-B7D96B48C844" sourceRef="sid-A09134E6-5E33-4BCC-84CB-6EBE99AAFA29" targetRef="sid-2AB94E60-4EAC-482F-A57C-262F6A50EE67"></sequenceFlow>
     <sequenceFlow id="sid-DD077E51-27DE-4F50-A601-0CCE3591E338" sourceRef="startEvent1" targetRef="sid-CDD292C4-CF8E-4E64-B57C-131F50466A37"></sequenceFlow>
     <sequenceFlow id="sid-C9019B31-9AC3-4F2A-9BFE-29B78D871DDB" sourceRef="sid-CDD292C4-CF8E-4E64-B57C-131F50466A37" targetRef="sid-17419001-AF2F-493B-93F7-FEEC5C1EF816"></sequenceFlow>
-    <serviceTask id="sid-CDD292C4-CF8E-4E64-B57C-131F50466A37" name="Send mail to Employee and Managers" flowable:expression="#{emailService.sendEmailHr()}"></serviceTask>
+    <serviceTask id="sid-CDD292C4-CF8E-4E64-B57C-131F50466A37" name="Send mail to Employee and Managers" flowable:expression="#{emailService.sendEmailHr(appraisal)}"></serviceTask>
   </process>
 </definitions>
