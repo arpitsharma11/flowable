@@ -75,8 +75,8 @@ public class EmailService {
         sender.send(message);
 
     }
-    public void sendEmailHr(JsonNode jsonNode){
-        System.out.println("send email hr" + jsonNode);
+    public void sendMailEmployeeManagerHr(JsonNode jsonNode){
+        System.out.println("send email employee manager hr " + jsonNode);
 
             sendEmailConfirmation(jsonNode.get("employeeEmail").asText(),"zetalent","Appraisal cycle started");
             sendEmailConfirmation(jsonNode.get("managerEmail").asText(),jsonNode.get("name").asText(),"Appraisal cycle started");
@@ -85,5 +85,9 @@ public class EmailService {
 
     public void sendEmailConfirmation(){
         System.out.println("send email confirmation with no parameters");
+    }
+
+    public void sendEmailHr(){
+        System.out.println("send email hr");
     }
 }
