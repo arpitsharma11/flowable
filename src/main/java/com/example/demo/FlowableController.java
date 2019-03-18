@@ -2,14 +2,18 @@ package com.example.demo;
 
 
 import com.fasterxml.jackson.databind.JsonNode;
+import net.fortuna.ical4j.model.ValidationException;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.security.GeneralSecurityException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -18,6 +22,9 @@ public class FlowableController {
 
     @Autowired
     private FlowableService myService;
+
+    @Autowired
+    private EmailService emailService;
 
     @RequestMapping(value="/startProcess", method= RequestMethod.POST)
     public List<String> startProcessInstance(@RequestBody JsonNode jsonNode) throws JSONException {
@@ -44,12 +51,21 @@ public class FlowableController {
 //            dtos.add(new TaskRepresentation(task.getId(), task.getName()));
 //        }
 //        System.out.println(dtos);
-
-        System.out.println(jsonNode);
+        myService.getTasks(jsonNode.get("assignee").asText());
 
     }
 
+    @PostMapping(value = "/sendinvitation")
+    public ResponseEntity<String> sendInvitation(@RequestBody JsonNode jsonNode) throws MessagingException {
+        System.out.println("send invitation controller called");
+        return new ResponseEntity<>(emailService.sendInvitation(jsonNode), HttpStatus.CREATED);
+    }
 
+    @PostMapping(value = "/calendarinvitation")
+    public ResponseEntity<String> calendarInvitation(@RequestBody JsonNode jsonNode) throws ValidationException, URISyntaxException, MessagingException, IOException {
+        System.out.println("send invitation controller called");
+        return new ResponseEntity<>(emailService.invitation(jsonNode), HttpStatus.CREATED);
+    }
 
 }
 

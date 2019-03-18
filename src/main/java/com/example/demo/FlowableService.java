@@ -67,6 +67,8 @@ public class FlowableService {
         System.out.println("task name :" + task.getName());
         System.out.println("task id " + task.getId());
         taskService.complete(task.getId());
+
+
         System.out.println("after task complete");
         return task.getName();
     }
@@ -81,15 +83,16 @@ public class FlowableService {
         for (Task task1 : tasks){
             System.out.println("task name" + task1.getName());
         }
-
-
-
         return task.getName();
     }
 
     @Transactional
-    public List<Task> getTasks(String assignee) {
-        return taskService.createTaskQuery().taskAssignee(assignee).list();
+    public void getTasks(String assignee) {
+        List<Task> tasks =  taskService.createTaskQuery().taskAssignee(assignee).list();
+        for (Task task : tasks){
+            System.out.println("assignee" + task.getAssignee());
+            System.out.println("task name" + task.getName());
+        }
     }
 
 }
