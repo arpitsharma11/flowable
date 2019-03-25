@@ -40,9 +40,6 @@ public class EmailService {
     @Autowired
     private JavaMailSender sender;
 
-    @Autowired
-    private CalendarQuickstart quickstart;
-
     public void sendEmailConfirmation(String email,String body,String subject){
         MimeMessage message = sender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
@@ -56,7 +53,6 @@ public class EmailService {
             e.printStackTrace();
         }
         sender.send(message);
-
     }
 
     public void sendEmailSanitation(){
