@@ -55,11 +55,6 @@ public class FlowableController {
 
     }
 
-    @PostMapping(value = "/sendinvitation")
-    public ResponseEntity<String> sendInvitation(@RequestBody JsonNode jsonNode) throws MessagingException {
-        System.out.println("send invitation controller called");
-        return new ResponseEntity<>(emailService.sendInvitation(jsonNode), HttpStatus.CREATED);
-    }
 
     @PostMapping(value = "/calendarinvitation")
     public ResponseEntity<String> calendarInvitation(@RequestBody JsonNode jsonNode) throws ValidationException, URISyntaxException, MessagingException, IOException {
