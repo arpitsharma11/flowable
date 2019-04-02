@@ -24,16 +24,9 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
-import javax.servlet.ServletOutputStream;
 import java.io.*;
-import java.net.SocketException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.security.GeneralSecurityException;
-import java.util.List;
-
-import static net.fortuna.ical4j.model.Property.METHOD;
-import static net.fortuna.ical4j.model.Property.ORGANIZER;
 
 @Service
 public class EmailService {

@@ -45,10 +45,12 @@
 			<artifactId>android-json</artifactId>
 			<version>0.0.20131108.vaadin1</version>
 		</dependency>
-		<dependency>
-			<groupId>org.jboss.seam</groupId>
-			<artifactId>jboss-seam-mail</artifactId>
-		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.jboss.seam/jboss-seam -->
+		<!--<dependency>-->
+			<!--<groupId>org.jboss.seam</groupId>-->
+			<!--<artifactId>jboss-seam</artifactId>-->
+			<!--<version>3.2.1</version>-->
+		<!--</dependency>-->
 		<dependency>
 			<groupId>com.google.apis</groupId>
 			<artifactId>google-api-services-calendar</artifactId>
@@ -70,10 +72,15 @@
 			<version>1.0.2</version>
 		</dependency>
 		<dependency>
-			    <groupId>org.springframework.boot</groupId>
-			    <artifactId>spring-boot-starter-mail</artifactId>
-			    <version>2.0.1.RELEASE</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+			<version>2.1.3.RELEASE</version>
 		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>javax.mail</groupId>-->
+			<!--<artifactId>mail</artifactId>-->
+			<!--<version>1.4</version>-->
+		<!--</dependency>-->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
@@ -87,6 +94,14 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.0.0-M3</version>
+				<configuration>
+					<skipTests>true</skipTests>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

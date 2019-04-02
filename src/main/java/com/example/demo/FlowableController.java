@@ -61,6 +61,5 @@ public class FlowableController {
         System.out.println("send invitation controller called");
         return new ResponseEntity<>(emailService.invitation(jsonNode), HttpStatus.CREATED);
     }
-
 }
 

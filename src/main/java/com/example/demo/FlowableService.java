@@ -8,6 +8,7 @@ import org.flowable.engine.history.HistoricActivityInstance;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.task.api.Task;
 
+import org.flowable.task.api.history.HistoricTaskInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -79,10 +80,15 @@ public class FlowableService {
                 .processInstanceId(jsonNode.get("processId").asText())
                 .singleResult();
 
-        List<Task> tasks = taskService.createTaskQuery().processInstanceId(jsonNode.get("processId").asText()).list();
-        for (Task task1 : tasks){
-            System.out.println("task name" + task1.getName());
+
+        List<HistoricTaskInstance> taskList = historyService
+                .createHistoricTaskInstanceQuery()
+                .processInstanceId(jsonNode.get("processId").asText()).list();
+
+        for (HistoricTaskInstance historicTaskInstance : taskList){
+            System.out.println("task details " + historicTaskInstance.getName());
         }
+
         return task.getName();
     }
 
